@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -57,5 +58,29 @@ class LoginController extends Controller
     protected function guard()
     {
         return Auth::guard('web');
+    }
+    
+    public function login(Request $request)
+    {
+        // Validate form data
+        $this->validate($request, [
+            'email' => 'required|email',
+            'password' => 'required|min:8'
+        ]);
+
+        // Attempt to log the user in
+        if(Auth::guard('web')->attempt(['email' => $request->email, 'password' => $request->password], $request->remember))
+        {
+            return redirect()->intended(route('home'));
+        }
+
+        // if unsuccessful
+        return redirect()->back()->withInput($request->only('email','remember'));
+    }
+
+    public function logout()
+    {
+        Auth::guard()->logout();
+        return redirect('/');
     }
 }

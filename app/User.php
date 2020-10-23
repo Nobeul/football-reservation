@@ -15,6 +15,9 @@ class User extends Authenticatable
      *
      * @var array
      */
+
+    protected $guard = 'users';
+    
     protected $fillable = [
         'name', 'email', 'password',
     ];
@@ -36,4 +39,29 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class);
+    }
+
+    public function location()
+    {
+        return $this->belongsTo(Location::class);
+    }
+
+    public function roles()
+    {
+        return $this->hasMany(Role::class);
+    }
+
+    public function slots()
+    {
+        return $this->hasMany(Slot::class);
+    }
+
+    public function role_user()
+    {
+        return $this->belongsTo(RoleUser::class);
+    }
 }
