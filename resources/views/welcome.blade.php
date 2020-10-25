@@ -64,6 +64,9 @@
         </style>
     </head>
     <body>
+        @foreach($user as $us)
+            {{ $us->location }}
+        @endforeach
         <div class="flex-center position-ref full-height">
             @if (Route::has('login'))
                 <div class="top-right links">

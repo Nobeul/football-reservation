@@ -14,21 +14,26 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    $data['user'] = App\User::where('id', '1')->get();
+    return view('welcome',$data);
 });
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('admin/home', 'AdminController@index')->name('admin.home');
-Route::get('admin', 'Admin\LoginController@showLoginForm')->name('admin.login');
-Route::post('admin', 'Admin\LoginController@login');
-Route::post('password/email', 'Admin\ForgotPasswordController@sendResetLinkEmail')->name('admin.password.email');
-Route::get('admin/password/reset', 'Admin\ForgotPasswordController@showLinkRequestForm')->name('admin.password.request');
-Route::post('admin/password/reset', 'Admin\ResetPasswordController@reset')->name('admin.password.update');
-Route::get('admin/password/reset/{token}', 'Admin\ResetPasswordController@showResetForm')->name('admin.password.reset');
-Route::post('/admin/logout', 'Admin\LoginController@logout')->name('admin.logout');
+Route::prefix('admin')->group(function () {
+    Route::get('home', 'AdminController@index')->name('admin.home');
+    Route::get('/', 'Admin\LoginController@showLoginForm')->name('admin.login');
+    Route::post('/', 'Admin\LoginController@login');
+    Route::post('password/email', 'Admin\ForgotPasswordController@sendResetLinkEmail')->name('admin.password.email');
+    Route::get('password/reset', 'Admin\ForgotPasswordController@showLinkRequestForm')->name('admin.password.request');
+    Route::post('password/reset', 'Admin\ResetPasswordController@reset')->name('admin.password.update');
+    Route::get('password/reset/{token}', 'Admin\ResetPasswordController@showResetForm')->name('admin.password.reset');
+    Route::post('logout', 'Admin\LoginController@logout')->name('admin.logout');
+});
 
-
-
+Route::prefix('users')->group(function () {
+    Route::get('/', 'UserController@list')->name('user.list');
+    
+});
