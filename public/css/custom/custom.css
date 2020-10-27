@@ -1,0 +1,79 @@
+.edit-button {
+    margin-bottom: 10px;
+    margin-left: 0;
+    padding-left: 0;
+    display: block;
+    float:left;
+}
+.delete-button {
+    margin-bottom: 10px;
+    display:block;
+}   
+.edit-icon {
+    color: #1d8cea;
+    font-weight: 400;
+    border: 1px solid #7c7cde;
+    border-radius: 5px;
+    padding: 5px;
+}
+.delete-icon {
+    color: #ec3939;
+    font-weight: 400;
+    border: 1px solid #de5555;
+    border-radius: 5px;
+    padding: 5px;
+}
+.link {
+    color: black;
+    font-weight: bold;
+}
+.active-status {
+    border: 1px solid #7c7cde;
+    border-radius: 5px;
+}
+.inactive-status {
+    border: 1px solid #101025;
+    border-radius: 5px;
+}
+.profile-image {
+    height: 50px;
+    width: 75px;
+}
+.view-profile-image {
+    width: 200px;
+    height: 200px;
+}
+.float-right {
+    float: right;
+}
+.mb-4 {
+    margin-bottom: 4%;
+}
+.error {
+    color: red;
+    font-size: 12px;
+}
+.title-style {
+    font-size: 1.5rem;
+}
+@media only screen and (min-width: 768px) {
+    .delete-icon {
+        margin-left: -15px;
+    }
+    .action {
+        width: 11%;
+    }
+    .user-image {
+        width: 11%;
+    }
+    .ml-40p {
+        margin-left: 40%;
+    }
+    .input-file {
+        margin-left: 21%;
+        margin-top: 2%;
+    }
+    .view-profile-image {
+        max-width: 200px;
+    }
+}

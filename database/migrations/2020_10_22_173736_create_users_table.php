@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration
             $table->foreign('role_id')->references('id')->on('roles');
             $table->string('mobile')->nullable();
             $table->boolean('is_active')->default(0);
+            $table->string('gender');
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();

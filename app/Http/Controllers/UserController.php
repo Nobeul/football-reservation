@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Location;
 
 class UserController extends Controller
 {
@@ -25,7 +26,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        $data['locations'] = Location::all();
+        return view('admin.user.add', $data);
     }
 
     /**
@@ -36,7 +38,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request->all());
     }
 
     /**
@@ -45,10 +47,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function view($id)
     {
-        
-
+        $data['user'] = User::where('id', $id)->first();
+        return view('admin.user.view', $data);
     }
 
     /**
@@ -59,7 +61,9 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data['user'] = User::where('id', $id)->first();
+        $data['locations'] = Location::get();
+        return view('admin.user.edit', $data);
     }
 
     /**
@@ -71,7 +75,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        dd($request->all());
     }
 
     /**

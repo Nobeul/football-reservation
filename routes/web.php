@@ -35,5 +35,9 @@ Route::prefix('admin')->group(function () {
 
 Route::prefix('users')->group(function () {
     Route::get('/', 'UserController@list')->name('user.list');
-    
+    Route::get('/view/{id}', 'UserController@view')->name('user.details');
+    Route::get('/add', 'UserController@create')->name('user.create');
+    Route::post('/add', 'UserController@store')->name('user.store');
+    Route::get('/edit/{id}', 'UserController@edit')->name('user.edit');
+    Route::post('/update/{id}', 'UserController@update')->name('user.update');
 });
