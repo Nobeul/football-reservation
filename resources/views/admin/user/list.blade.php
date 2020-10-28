@@ -40,7 +40,7 @@
                                 {{ $user->first_name }} {{ $user->last_name }}
                             </a>
                         </td>
-                        <td>{{ $user->location->country_name }}</td>
+                        <td>{{ $user->country->name }}</td>
                         <td>
                             <div class="{{ $user->is_active ? 'active-status' : 'inactive-status' }} text-center">
                                 {{ $user->is_active ? 'Active' : 'Inactive' }}

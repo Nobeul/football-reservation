@@ -28,10 +28,10 @@
 </div>
 <div class="row mt-2">
     <div class="col-md-4 text-right font-weight-bold">
-        Location:
+        Country:
     </div>
     <div class="col-md-8">
-        {{ $user->location->country_name }}, {{ $user->location->state }}, {{ $user->location->city }}
+        {{ $user->country->name }}
     </div>
 </div>
 <div class="row mt-2">

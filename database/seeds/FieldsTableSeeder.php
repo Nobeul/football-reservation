@@ -19,7 +19,7 @@ class FieldsTableSeeder extends Seeder
             array (
                 'id' => 1,
                 'name' => 'Bangabandhu National Stadium',
-                'location_id' => 3,
+                'country_id' => 3,
                 'created_at'  => Null,
                 'updated_at'  => Null,
             ),
@@ -27,7 +27,7 @@ class FieldsTableSeeder extends Seeder
             array (
                 'id' => 2,
                 'name' => 'Sher E Bangla National Stadium',
-                'location_id' => 3,
+                'country_id' => 3,
                 'created_at'  => Null,
                 'updated_at'  => Null,
             ),
@@ -35,7 +35,7 @@ class FieldsTableSeeder extends Seeder
             array (
                 'id' => 3,
                 'name' => 'Shaheed Chandu Stadium',
-                'location_id' => 2,
+                'country_id' => 2,
                 'created_at'  => Null,
                 'updated_at'  => Null,
             ),

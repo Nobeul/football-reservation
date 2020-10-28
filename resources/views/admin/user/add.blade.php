@@ -8,6 +8,7 @@
             <!-- /.card-header -->
             <!-- form start -->
             <form class="form-horizontal" id="user-add" method="post" action="{{ route('user.store') }}">
+                @csrf
                 <div class="card-body">
                     <div class="form-group row">
                         <div class="col-sm-4">
@@ -49,9 +50,9 @@
                             <span class="text-red">*</span>
                         </label>
                         <div class="col-sm-10">
-                            <Select class="form-control" name="country">
-                                @foreach($locations as $location)
-                                <option value="{{$location->id}}">{{ $location->country_name }}</option>
+                            <Select class="form-control" name="country_id">
+                                @foreach($countries as $country)
+                                <option value="{{ $country['id'] }}">{{ $country['name'] }}</option>
                                 @endforeach
                             </Select>
                         </div>
@@ -61,9 +62,9 @@
                             <span class="text-red">*</span>
                         </label>
                         <div class="col-sm-10">
-                            <Select class="form-control" name="state">
-                                @foreach($locations as $location)
-                                <option value="{{ $location->id }}">{{ $location->state }}</option>
+                            <Select class="form-control" name="state_id">
+                                @foreach($states as $state)
+                                <option value="{{ $state['id'] }}">{{ $state['name'] }}</option>
                                 @endforeach
                             </Select>
                         </div>
@@ -73,9 +74,9 @@
                             <span class="text-red">*</span>
                         </label>
                         <div class="col-sm-10">
-                            <Select class="form-control" name="city">
-                                @foreach($locations as $location)
-                                <option value="{{ $location->id }}">{{ $location->city }}</option>
+                            <Select class="form-control" name="city_id">
+                                @foreach($cities as $city)
+                                <option value="{{ $city['id'] }}">{{ $city['name'] }}</option>
                                 @endforeach
                             </Select>
                         </div>
@@ -84,6 +85,18 @@
                         <label class="col-sm-2 col-form-label">Mobile</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" name="mobile" id="mobile" placeholder="Mobile Number">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Role
+                            <span class="text-red">*</span>
+                        </label>
+                        <div class="col-sm-10">
+                            <Select class="form-control" name="city_id">
+                                @foreach($roles as $role)
+                                <option value="{{ $role['id'] }}">{{ $role['name'] }}</option>
+                                @endforeach
+                            </Select>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -106,6 +119,18 @@
                                 <option value="0">{{ 'Male' }}</option>
                                 <option value="1">{{ 'Female' }}</option>
                             </Select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Password</label>
+                        <div class="col-sm-10">
+                            <input type="password" class="form-control" name="password" id="password" placeholder="Password">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Confirm Password</label>
+                        <div class="col-sm-10">
+                            <input type="password" class="form-control" name="confirm_password" id="confirm_password" placeholder="Confirm Password">
                         </div>
                     </div>
                 </div>

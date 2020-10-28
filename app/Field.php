@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Field extends Model
 {
-    public function field()
+    public function country()
     {
-        return $this->hasOne(Location::class);
+        return $this->hasOne(Country::class);
     }
 
     public function slots()

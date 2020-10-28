@@ -8,6 +8,7 @@
             <!-- /.card-header -->
             <!-- form start -->
             <form class="form-horizontal" id="user-edit" method="post" action="{{ route('user.update', $user->id) }}">
+                @csrf
                 <div class="card-body">
                     <div class="form-group row">
                         <div class="col-sm-4">
@@ -50,8 +51,8 @@
                         </label>
                         <div class="col-sm-10">
                             <Select class="form-control" name="country">
-                                @foreach($locations as $location)
-                                <option value="{{$location->id}}">{{ $location->country_name }}</option>
+                                @foreach($countries as $country)
+                                <option value="{{ $country['id'] }}">{{ $country['name'] }}</option>
                                 @endforeach
                             </Select>
                         </div>
@@ -62,8 +63,8 @@
                         </label>
                         <div class="col-sm-10">
                             <Select class="form-control" name="state">
-                                @foreach($locations as $location)
-                                <option value="{{ $location->id }}">{{ $location->state }}</option>
+                                @foreach($states as $state)
+                                <option value="{{ $state['id'] }}">{{ $state->name }}</option>
                                 @endforeach
                             </Select>
                         </div>
@@ -74,8 +75,8 @@
                         </label>
                         <div class="col-sm-10">
                             <Select class="form-control" name="city">
-                                @foreach($locations as $location)
-                                <option value="{{ $location->id }}">{{ $location->city }}</option>
+                                @foreach($cities as $city)
+                                <option value="{{ $city['id'] }}">{{ $city['name'] }}</option>
                                 @endforeach
                             </Select>
                         </div>
@@ -84,6 +85,18 @@
                         <label class="col-sm-2 col-form-label">Mobile</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" name="mobile" id="mobile" placeholder="Mobile Number">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Role
+                            <span class="text-red">*</span>
+                        </label>
+                        <div class="col-sm-10">
+                            <Select class="form-control" name="city_id">
+                                @foreach($roles as $role)
+                                <option value="{{ $role['id'] }}">{{ $role['name'] }}</option>
+                                @endforeach
+                            </Select>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -106,6 +119,18 @@
                                 <option value="1" {{ $user->gender == 'male' ? 'Selected' : '' }}>{{ 'Male' }}</option>
                                 <option value="0" {{ $user->gender == 'female' ? 'Selected' : '' }}>{{ 'Female' }}</option>
                             </Select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Password</label>
+                        <div class="col-sm-10">
+                            <input type="password" class="form-control" name="password" id="password">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Confirm Password</label>
+                        <div class="col-sm-10">
+                            <input type="password" class="form-control" name="confirm_password" id="confirm_password">
                         </div>
                     </div>
                 </div>
@@ -149,6 +174,12 @@
                 required: true,
             },
             gender: {
+                required: true,
+            },
+            password: {
+                required: true,
+            },
+            confirm_password: {
                 required: true,
             }
         }
