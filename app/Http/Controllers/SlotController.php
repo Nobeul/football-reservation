@@ -5,20 +5,55 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Field;
 use App\Country;
+use App\Slot;
+use App\Reservation;
 
-class FieldController extends Controller
+class SlotController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function list()
+    public function index()
     {
         $data['fields'] = Field::with('country')->get();
 
-        return view('admin.field.list', $data);
+        return view('admin.slots.field_list', $data);
+
     }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function list($field_id)
+    {
+        $data['slots'] = Slot::where('field_id', $field_id)->get();
+        $data['field'] = Field::with('country')->where('id', $field_id)->first();
+        $data['reservations'] = Reservation::where('field_id', $field_id)->first();
+
+        return view('admin.slots.list', $data);
+
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function view($slot_id)
+    {
+        $data['totalSeat'] = Slot::where('id', $slot_id)->value('total_seat');
+        // $data['field'] = Field::with('country')->where('id', $field_id)->first();
+        $reservations = Reservation::where('field_id', $slot_id)->value('reserved_seat');
+        $data['reservedSeats'] = explode(',',$reservations);
+        
+        return view('admin.slots.view', $data);
+
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -60,10 +95,7 @@ class FieldController extends Controller
      */
     public function edit($id)
     {
-        $data['field'] = Field::where('id', $id)->first();
-        $data['countries'] = Country::all();
-        
-        return view('admin.field.edit', $data);
+        //
     }
 
     /**

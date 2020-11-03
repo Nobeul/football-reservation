@@ -8,6 +8,11 @@ class Country extends Model
 {
     public function state()
     {
-        return $this->belongsTo(State::class);
+        return $this->hasOne(State::class);
+    }
+
+    public function field()
+    {
+        return $this->belongsTo(Field::class);
     }
 }

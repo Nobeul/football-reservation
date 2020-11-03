@@ -41,3 +41,22 @@ Route::prefix('users')->group(function () {
     Route::get('/edit/{id}', 'UserController@edit')->name('user.edit');
     Route::post('/update/{id}', 'UserController@update')->name('user.update');
 });
+
+Route::prefix('fields')->group(function () {
+    Route::get('/', 'FieldController@list')->name('field.list');
+    Route::get('/view/{id}', 'FieldController@view')->name('field.details');
+    Route::get('/add', 'FieldController@create')->name('field.create');
+    Route::post('/add', 'FieldController@store')->name('field.store');
+    Route::get('/edit/{id}', 'FieldController@edit')->name('field.edit');
+    Route::post('/update/{id}', 'FieldController@update')->name('field.update');
+});
+
+Route::prefix('slots')->group(function () {
+    Route::get('/', 'SlotController@index')->name('slot.field');
+    Route::get('/list/{field_id}', 'SlotController@list')->name('slot.list');
+    Route::get('/view/{id}', 'SlotController@view')->name('slot.details');
+    Route::get('/add', 'SlotController@create')->name('slot.create');
+    Route::post('/add', 'SlotController@store')->name('slot.store');
+    Route::get('/edit/{id}', 'SlotController@edit')->name('slot.edit');
+    Route::post('/update/{id}', 'SlotController@update')->name('slot.update');
+});
