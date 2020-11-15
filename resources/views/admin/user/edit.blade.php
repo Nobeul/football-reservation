@@ -7,14 +7,20 @@
         <div class="card card-info">
             <!-- /.card-header -->
             <!-- form start -->
-            <form class="form-horizontal" id="user-edit" method="post" action="{{ route('user.update', $user->id) }}">
+            <form class="form-horizontal" id="user-edit" method="post" action="{{ route('user.update', $user->id) }}" enctype="multipart/form-data">
                 @csrf
                 <div class="card-body">
                     <div class="form-group row">
                         <div class="col-sm-4">
                         </div>
                         <div class="col-sm-6">
-                            <image src="{{ asset('dist/img/avatar5.png') }}" class="view-profile-image" id="profile-image" />
+                            @if($profileImage == 'male')
+                                <img src="{{ asset('dist/img/avatar5.png') }}" class="view-profile-image" id="profile-image" />
+                            @elseif($profileImage == 'female')
+                                <img src="{{ asset('dist/img/avatar2.png') }}" class="view-profile-image" id="profile-image" />
+                            @else
+                                <img src="{{ asset('storage/profile-images/'.$profileImage) }}" class="view-profile-image" id="profile-image" />
+                            @endif
                         </div>
                     </div>
                     <div class="custom-file mb-4">
@@ -50,33 +56,9 @@
                             <span class="text-red">*</span>
                         </label>
                         <div class="col-sm-10">
-                            <Select class="form-control" name="country">
+                            <Select class="form-control" name="country_id">
                                 @foreach($countries as $country)
                                 <option value="{{ $country['id'] }}">{{ $country['name'] }}</option>
-                                @endforeach
-                            </Select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">State
-                            <span class="text-red">*</span>
-                        </label>
-                        <div class="col-sm-10">
-                            <Select class="form-control" name="state">
-                                @foreach($states as $state)
-                                <option value="{{ $state['id'] }}">{{ $state->name }}</option>
-                                @endforeach
-                            </Select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">City
-                            <span class="text-red">*</span>
-                        </label>
-                        <div class="col-sm-10">
-                            <Select class="form-control" name="city">
-                                @foreach($cities as $city)
-                                <option value="{{ $city['id'] }}">{{ $city['name'] }}</option>
                                 @endforeach
                             </Select>
                         </div>
@@ -92,7 +74,7 @@
                             <span class="text-red">*</span>
                         </label>
                         <div class="col-sm-10">
-                            <Select class="form-control" name="city_id">
+                            <Select class="form-control" name="role_id">
                                 @foreach($roles as $role)
                                 <option value="{{ $role['id'] }}">{{ $role['name'] }}</option>
                                 @endforeach
@@ -116,8 +98,8 @@
                         </label>
                         <div class="col-sm-10">
                             <Select class="form-control" name="gender">
-                                <option value="1" {{ $user->gender == 'male' ? 'Selected' : '' }}>{{ 'Male' }}</option>
-                                <option value="0" {{ $user->gender == 'female' ? 'Selected' : '' }}>{{ 'Female' }}</option>
+                                <option value="male" {{ $user->gender == 'male' ? 'Selected' : '' }}>{{ 'Male' }}</option>
+                                <option value="female" {{ $user->gender == 'female' ? 'Selected' : '' }}>{{ 'Female' }}</option>
                             </Select>
                         </div>
                     </div>

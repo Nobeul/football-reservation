@@ -4,7 +4,7 @@
 <div class="card">
     <div class="card-header">
         <h3 class="card-title title-style"><u>User List</u></h3>
-        <a href="{{ route('user.create') }}" class="btn btn-primary float-right"><i class="fas fa-plus"></i> New User</a>
+        <a href="{{ route('field.create') }}" class="btn btn-primary float-right"><i class="fas fa-plus"></i> New Field</a>
     </div>
     <!-- /.card-header -->
     <div class="card-body">
@@ -35,7 +35,10 @@
                     <td>{{ $field->country->name }}</td>
                     <td>
                         <a type="button" class="btn edit-button" href="{{ route('field.edit', $field->id) }}"><i class="fas fa-edit edit-icon"></i></a>
-                        <button type="submit" class="btn delete-button"><i class="fas fa-trash-alt delete-icon"></i></button>
+                        <form action="{{ route('field.delete', $field->id) }}" method="post">
+                            @csrf
+                            <button type="submit" class="btn delete-button"><i class="fas fa-trash-alt delete-icon"></i></button>
+                        </form>
                     </td>
                 </tr>
                 @endforeach

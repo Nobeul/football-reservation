@@ -3,8 +3,8 @@
 @section('content')
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title title-style"><u>Field List</u></h3>
-        <a href="{{ route('user.create') }}" class="btn btn-primary float-right"><i class="fas fa-plus"></i> New User</a>
+        <h3 class="card-title title-style"><u>Slot List</u></h3>
+        <a href="{{ route('slot.create') }}" class="btn btn-primary float-right"><i class="fas fa-plus"></i> New Slot</a>
     </div>
     <!-- /.card-header -->
     <div class="card-body">

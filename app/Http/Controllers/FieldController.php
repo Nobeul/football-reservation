@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Field;
 use App\Country;
+use Mail;
+use App\Mail\SendMail;
 
 class FieldController extends Controller
 {
@@ -27,7 +29,8 @@ class FieldController extends Controller
      */
     public function create()
     {
-        //
+        $data['countries'] = Country::all();
+        return view('admin.field.add', $data);
     }
 
     /**
@@ -38,7 +41,12 @@ class FieldController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $field = new Field;
+        $field->name = $request->name;
+        $field->country_id = $request->country_id;
+        $field->save();
+
+        return redirect('/fields');
     }
 
     /**
@@ -84,8 +92,16 @@ class FieldController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete($id)
     {
-        //
+        $field = Field::where('id', $id);
+        $field->delete();
+
+        return back();
+    }
+    
+    public function sendMail()
+    {
+        Mail::send(new SendMail());
     }
 }

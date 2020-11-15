@@ -33,6 +33,7 @@ class SlotController extends Controller
         $data['slots'] = Slot::where('field_id', $field_id)->get();
         $data['field'] = Field::with('country')->where('id', $field_id)->first();
         $data['reservations'] = Reservation::where('field_id', $field_id)->first();
+        // dd($data);
 
         return view('admin.slots.list', $data);
 
@@ -119,5 +120,9 @@ class SlotController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function paypal() {
+        return view('admin.slots.paypal');
     }
 }

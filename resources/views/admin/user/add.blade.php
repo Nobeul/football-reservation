@@ -7,14 +7,14 @@
         <div class="card card-info">
             <!-- /.card-header -->
             <!-- form start -->
-            <form class="form-horizontal" id="user-add" method="post" action="{{ route('user.store') }}">
+            <form class="form-horizontal" id="user-add" method="post" action="{{ route('user.store') }}" enctype="multipart/form-data">
                 @csrf
                 <div class="card-body">
                     <div class="form-group row">
                         <div class="col-sm-4">
                         </div>
                         <div class="col-sm-6">
-                            <image src="{{ asset('dist/img/avatar5.png') }}" class="view-profile-image" id="profile-image" />
+                            <img src="{{ asset('dist/img/avatar5.png') }}" class="view-profile-image" id="profile-image" />
                         </div>
                     </div>
                     <div class="custom-file mb-4">
@@ -58,18 +58,6 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">State
-                            <span class="text-red">*</span>
-                        </label>
-                        <div class="col-sm-10">
-                            <Select class="form-control" name="state_id">
-                                @foreach($states as $state)
-                                <option value="{{ $state['id'] }}">{{ $state['name'] }}</option>
-                                @endforeach
-                            </Select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
                         <label class="col-sm-2 col-form-label">City
                             <span class="text-red">*</span>
                         </label>
@@ -92,7 +80,7 @@
                             <span class="text-red">*</span>
                         </label>
                         <div class="col-sm-10">
-                            <Select class="form-control" name="city_id">
+                            <Select class="form-control" name="role_id">
                                 @foreach($roles as $role)
                                 <option value="{{ $role['id'] }}">{{ $role['name'] }}</option>
                                 @endforeach
@@ -116,8 +104,8 @@
                         </label>
                         <div class="col-sm-10">
                             <Select class="form-control" name="gender" id="gender">
-                                <option value="0">{{ 'Male' }}</option>
-                                <option value="1">{{ 'Female' }}</option>
+                                <option value="male">{{ 'Male' }}</option>
+                                <option value="female">{{ 'Female' }}</option>
                             </Select>
                         </div>
                     </div>
@@ -165,9 +153,6 @@
             country: {
                 required: true,
             },
-            state: {
-                required: true,
-            },
             city: {
                 required: true,
             },
@@ -179,7 +164,7 @@
             }
         }
     });
-
+    $('#profile-image').css('display','none');
     function readURL(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
@@ -199,6 +184,8 @@
     $('#input-image').on('change', function(e) {
         var fileName = e.target.files[0].name;
         $('#profile-image-name').text(fileName);
+        $('#profile-image').css('display','block');
+
     });
 </script>
 @endsection

@@ -49,6 +49,8 @@ Route::prefix('fields')->group(function () {
     Route::post('/add', 'FieldController@store')->name('field.store');
     Route::get('/edit/{id}', 'FieldController@edit')->name('field.edit');
     Route::post('/update/{id}', 'FieldController@update')->name('field.update');
+    Route::post('/delete/{id}', 'FieldController@delete')->name('field.delete');
+    Route::get('/send', 'FieldController@sendMail')->name('field.create');
 });
 
 Route::prefix('slots')->group(function () {
@@ -59,4 +61,6 @@ Route::prefix('slots')->group(function () {
     Route::post('/add', 'SlotController@store')->name('slot.store');
     Route::get('/edit/{id}', 'SlotController@edit')->name('slot.edit');
     Route::post('/update/{id}', 'SlotController@update')->name('slot.update');
+    Route::get('/paypal', 'SlotController@paypal');
 });
+

@@ -7,7 +7,7 @@
         <div class="card card-info">
             <!-- /.card-header -->
             <!-- form start -->
-            <form class="form-horizontal" id="field-edit" method="post" action="{{ route('field.update', $field->id) }}">
+            <form class="form-horizontal" id="field-edit" method="post" action="{{ route('field.store') }}">
                 @csrf
                 <div class="card-body">
                     <div class="form-group row">
@@ -26,7 +26,7 @@
                             <span class="text-red">*</span>
                         </label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" name="name" id="field_name" placeholder="Field Name" value="{{ $field->name }}">
+                            <input type="text" class="form-control" name="name" id="field_name" placeholder="Field Name">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -34,7 +34,7 @@
                             <span class="text-red">*</span>
                         </label>
                         <div class="col-sm-10">
-                            <Select class="form-control" name="country">
+                            <Select class="form-control" name="country_id">
                                 @foreach($countries as $country)
                                 <option value="{{ $country['id'] }}">{{ $country['name'] }}</option>
                                 @endforeach

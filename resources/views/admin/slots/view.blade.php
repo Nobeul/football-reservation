@@ -21,8 +21,10 @@
                             </tr>
                         </thead>
                         <tbody id="seat-table">
+                            
                         </tbody>
                     </table>
+                    <h4>Total: <span id="total-price"></span></h4>
                 </div>
             </div>
         </div>
@@ -35,23 +37,28 @@
     var totalSeat = "{{ $totalSeat }}";
     var reservedSeats = <?php echo json_encode($reservedSeats); ?>;
 
+    $('#total-price').text('0');
+
     for (var i = 1; i <= totalSeat; i++) {
-        var html = '<i class="fas fa-chair seat" style="padding: 20px; color: grey" id="seat-' + i + '"></i>';
+        var html = '<a href="#"><i class="fas fa-chair seat" style="padding: 20px; color: grey" id="seat-' + i + '"></i></a>';
         $('#slot-view').append(html);
         if (i % 10 == 0) {
             $('#slot-view').append('</br>');
         }
     }
 
+    var totalPrice = 0;
     var seatArray = [];
     $('.seat').on('click', function() {
         var seatId = $(this).attr('id');
         seatId = seatId.slice(5, 7);
 
+        totalPrice = parseInt($('#total-price').text());
+
         var html = '';
         html = '<tr  class="text-center" id="s-' + seatId + '">';
         html += '<td> Seat-'+seatId+'</td>';
-        html += '<td>250</td>';
+        html += '<td id="seat-price">250</td>';
         html += '</tr>';
 
         if ($.inArray(seatId, reservedSeats) == -1) {
@@ -60,18 +67,24 @@
                 seatArray.push(seatId);
 
                 $('#seat-table').append(html);
+                totalPrice = totalPrice + parseInt($('#seat-price').text());
+                $('#total-price').text(totalPrice);
                 
             } else {
                 for (var i = 0; i < seatArray.length; i++) {
                     if (seatArray[i] == seatId) {
                         seatArray.splice(i, 1);
                         $('#s-'+ seatId).remove();
+                        totalPrice = totalPrice - parseInt($('#seat-price').text());
+                        if (isNaN(totalPrice)) {
+                            totalPrice = 0;
+                        }
+                        $('#total-price').text(totalPrice);
                     }
                 }
                 $('#seat-' + seatId).css('color', 'grey');
             }
         }
-        console.log(seatArray);
     });
 
     $.each(reservedSeats, function(key, value) {

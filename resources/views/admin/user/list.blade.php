@@ -28,10 +28,18 @@
                 <tr>
                         <td>
                             <a href="{{ route('user.details', $user->id) }}">
-                                @if($user->gender == 'male')
-                                    <image src="{{ asset('dist/img/avatar5.png') }}" class="profile-image"/>
+                                @if(in_array($user->id, $img))
+                                    @foreach($profileImage as $image)
+                                        @if($image->object_id == $user->id)
+                                        <img src="{{ asset('storage/profile-images/'.$image->file_name) }}" width="90px"/>
+                                        @endif
+                                    @endforeach
                                 @else
-                                    <image src="{{ asset('dist/img/avatar2.png') }}" class="profile-image"/>
+                                    @if($user->gender == 'male')
+                                        <img src="{{ asset('dist/img/avatar5.png') }}" width="90px"/>
+                                    @else
+                                        <img src="{{ asset('dist/img/avatar2.png') }}" width="90px"/>
+                                    @endif
                                 @endif
                             </a>
                         </td>

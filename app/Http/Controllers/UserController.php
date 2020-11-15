@@ -8,6 +8,8 @@ use App\Country;
 use App\State;
 use App\City;
 use App\Role;
+use App\File;
+use Auth;
 
 class UserController extends Controller
 {
@@ -18,7 +20,16 @@ class UserController extends Controller
      */
     public function list()
     {
+        $data['img'] = [];
         $data['users'] = User::get();
+        $data['profileImage'] = $profileImage = User::leftJoin('files', 'users.id', 'files.object_id')
+                                ->where('object_type','profile-image')
+                                ->get();
+        foreach($profileImage as $image) {
+            array_push($data['img'], $image->object_id);
+        }
+        $data['img'] = array_filter($data['img']);
+
         return view('admin.user.list', $data);
     }
 
@@ -53,10 +64,15 @@ class UserController extends Controller
         $user->mobile     = $request->mobile;
         $user->is_active  = $request->is_active;
         $user->gender     = $request->gender;
-        $user->password   = $request->password;
-        dd($user);
-
+        $user->password   = bcrypt($request->password);
         $user->save();
+        if ($request->hasFile('profile_image')) {
+            $fileName = $request->file('profile_image')->getClientOriginalName();
+            $request->profile_image->storeAs('profile-images', $fileName, 'public');
+            File::uploadImage('profile-image', $user->id, $fileName);
+        }
+
+        return redirect()->route('user.list');
     }
 
     /**
@@ -79,11 +95,15 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $data['user']       = User::where('id', $id)->first();
-        $data['countries']  = Country::all();
-        $data['states']     = State::all();
-        $data['cities']     = City::all();
-        $data['roles']      = Role::all();
+        $data['user']           = User::where('id', $id)->first();
+        $data['countries']      = Country::all();
+        $data['states']         = State::all();
+        $data['cities']         = City::all();
+        $data['roles']          = Role::all();
+        $data['profileImage']   = File::where(['object_type'=>'profile-image','object_id'=>$id])->value('file_name');
+        if ($data['profileImage'] == null) {
+            $data['profileImage'] = $data['user']->gender;
+        }
 
         return view('admin.user.edit', $data);
     }
@@ -97,7 +117,23 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        dd($request->all());
+        $user = User::where('id', $id)->first();
+        $user->first_name = $request->first_name;
+        $user->last_name  = $request->last_name;
+        $user->email      = $request->email;
+        $user->country_id = $request->country_id;
+        $user->role_id    = $request->role_id;
+        $user->mobile     = $request->mobile;
+        $user->is_active  = $request->is_active;
+        $user->gender     = $request->gender;
+        $user->password   = bcrypt($request->password);
+        $user->save();
+        if ($request->hasFile('profile_image')) {
+            $fileName = $request->file('profile_image')->getClientOriginalName();
+            File::uploadImage('profile-image', $user->id, $fileName, $id);
+            $request->profile_image->storeAs('profile-images', $fileName, 'public');
+        }
+        return redirect()->back();
     }
 
     /**
