@@ -5,15 +5,26 @@
     <div class="row">
         <div class="col-md-7">
             <h4 id="slot-view"></h4>
-            <a href="" class="btn btn-info" style="margin: 0 0 30px 20px">Continue</a>
+            <div class="gateway--paypal">
+                <form method="POST" action="{{ route('reservation.store') }}">
+                    {{ csrf_field() }}
+                    <input type="hidden" name="reserved_seat" id="reserved_seat">
+                    <input type="hidden" name="field_id" value="{{ $field }}">
+                    <input type="hidden" name="amount" id="reservation-total-amount">
+                    <button class="btn btn-info" id="paypal-btn" style="margin: 0 0 10% 20px">
+                        <i class="fa fa-paypal" aria-hidden="true"></i> Pay with PayPal
+                    </button>
+                </form>
+            </div>
         </div>
         <div class="col-md-5" style="margin-top: 20px;">
-            <articale><i class="fas fa-chair seat-preview-1" style="color:red"></i> </articale> <span>= Reserved Seats</span>
-            <articale><i class="fas fa-chair seat-preview-2" style="color:grey"></i> </articale><span>= Available Seats</span>
-            <articale><i class="fas fa-chair seat-preview-2" style="color:green"></i> </articale><span>= Selected Seats</span>
+            <articale><i class="fas fa-chair seat-preview-1" style="color:red"></i> </articale> <span style="padding-right:10px">= Reserved Seats</span>
+            <articale><i class="fas fa-chair seat-preview-2" style="color:grey"></i> </articale><span style="padding-right:10px">= Available Seats</span>
+            <articale><i class="fas fa-chair seat-preview-2" style="color:green"></i> </articale><span>= Selected Seats</span><br/><br/>
+            <p>Per Seat Price = ${{ $seatPrice }}</p>
             <div class="row">
                 <div class="col-md-12">
-                    <table class="table table-bordered" style="width: 90%; margin-top: 20px">
+                    <table class="table table-bordered" style="width: 90%; margin-top: 10px">
                         <thead>
                             <tr>
                                 <th class="text-center">Seat Number</th>
@@ -36,6 +47,7 @@
 <script>
     var totalSeat = "{{ $totalSeat }}";
     var reservedSeats = <?php echo json_encode($reservedSeats); ?>;
+    var seatPrice = "{{ $seatPrice }}";
 
     $('#total-price').text('0');
 
@@ -51,14 +63,13 @@
     var seatArray = [];
     $('.seat').on('click', function() {
         var seatId = $(this).attr('id');
-        seatId = seatId.slice(5, 7);
-
+        seatId = parseInt(seatId.slice(5, 7));
         totalPrice = parseInt($('#total-price').text());
 
         var html = '';
         html = '<tr  class="text-center" id="s-' + seatId + '">';
         html += '<td> Seat-'+seatId+'</td>';
-        html += '<td id="seat-price">250</td>';
+        html += '<td id="seat-price">' + seatPrice + '</td>';
         html += '</tr>';
 
         if ($.inArray(seatId, reservedSeats) == -1) {
@@ -92,6 +103,17 @@
         $('#seat-' + value).on('click', function() {
             alert('This seat is taken');
         });
+    });
+
+    $("#paypal-btn").on('click', function(e) {
+        var amount = parseFloat($("#total-price").text());
+        if (amount == 0) {
+            alert('Please select any seat first!');
+            e.preventDefault();
+        } else {
+            $('#reserved_seat').val(seatArray);
+            $('#reservation-total-amount').val(amount);
+        }
     });
 </script>
 @endsection

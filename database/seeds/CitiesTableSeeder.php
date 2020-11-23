@@ -41,7 +41,7 @@ class CitiesTableSeeder extends Seeder
             ),
             3 => 
             array (
-                'id' => 3,
+                'id' => 4,
                 'state_id' => 3,
                 'name' => 'Saidpur',
                 'created_at'  => Null,

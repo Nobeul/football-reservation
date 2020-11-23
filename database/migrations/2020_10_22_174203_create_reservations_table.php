@@ -19,6 +19,7 @@ class CreateReservationsTable extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->bigInteger('field_id')->unsigned();
             $table->foreign('field_id')->references('id')->on('fields');
+            $table->string('reserved_seat');
             $table->timestamps();
         });
     }

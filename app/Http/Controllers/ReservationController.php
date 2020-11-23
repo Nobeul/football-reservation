@@ -3,23 +3,23 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Field;
-use App\Country;
-use Mail;
-use App\Mail\SendMail;
+use Illuminate\Support\Facades\Auth;
+use App\Reservation;
 
-class FieldController extends Controller
+class ReservationController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:admin');
+    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function list()
+    public function index()
     {
-        $data['fields'] = Field::with('country')->get();
-
-        return view('admin.field.list', $data);
+        //
     }
 
     /**
@@ -29,8 +29,7 @@ class FieldController extends Controller
      */
     public function create()
     {
-        $data['countries'] = Country::all();
-        return view('admin.field.add', $data);
+        //
     }
 
     /**
@@ -41,12 +40,22 @@ class FieldController extends Controller
      */
     public function store(Request $request)
     {
-        $field = new Field;
-        $field->name = $request->name;
-        $field->country_id = $request->country_id;
-        $field->save();
+        $orderId = Reservation::orderBy('id','desc')->first();
+        $orderId = !empty($orderId) ? $orderId->order_id : 0;
+        $orderId = ++$orderId;
 
-        return redirect('/fields');
+        $reservedSeat = explode(",",$request->reserved_seat);
+        foreach ($reservedSeat as $seat) {
+            $reservation = new Reservation;
+            $reservation->user_id = Auth::id();
+            $reservation->field_id = $request->field_id;
+            $reservation->reserved_seat = $seat;
+            $reservation->order_id = $orderId;
+            $reservation->amount = $request->amount/count($reservedSeat);
+            $reservation->save();
+        }
+        return redirect()->route('order.paypal',$reservation->id);
+        // return redirect()->back();
     }
 
     /**
@@ -57,9 +66,7 @@ class FieldController extends Controller
      */
     public function show($id)
     {
-        $data['field'] = Field::with('country')->where('id', $id)->first();
-
-        return view('admin.field.view', $data);
+        //
     }
 
     /**
@@ -70,10 +77,7 @@ class FieldController extends Controller
      */
     public function edit($id)
     {
-        $data['field'] = Field::where('id', $id)->first();
-        $data['countries'] = Country::all();
-        
-        return view('admin.field.edit', $data);
+        //
     }
 
     /**
@@ -94,16 +98,8 @@ class FieldController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function delete($id)
+    public function destroy($id)
     {
-        $field = Field::where('id', $id);
-        $field->delete();
-
-        return back();
-    }
-    
-    public function sendMail()
-    {
-        Mail::send(new SendMail());
+        //
     }
 }

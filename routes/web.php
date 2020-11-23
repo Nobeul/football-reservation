@@ -23,7 +23,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::prefix('admin')->group(function () {
-    Route::get('home', 'AdminController@index')->name('admin.home');
+    Route::get('home', 'AdminController@index')->name('admin.home')->middleware('auth:admin');
     Route::get('/', 'Admin\LoginController@showLoginForm')->name('admin.login');
     Route::post('/', 'Admin\LoginController@login');
     Route::post('password/email', 'Admin\ForgotPasswordController@sendResetLinkEmail')->name('admin.password.email');
@@ -44,7 +44,7 @@ Route::prefix('users')->group(function () {
 
 Route::prefix('fields')->group(function () {
     Route::get('/', 'FieldController@list')->name('field.list');
-    Route::get('/view/{id}', 'FieldController@view')->name('field.details');
+    Route::get('/view/{id}', 'FieldController@show')->name('field.details');
     Route::get('/add', 'FieldController@create')->name('field.create');
     Route::post('/add', 'FieldController@store')->name('field.store');
     Route::get('/edit/{id}', 'FieldController@edit')->name('field.edit');
@@ -64,3 +64,34 @@ Route::prefix('slots')->group(function () {
     Route::get('/paypal', 'SlotController@paypal');
 });
 
+Route::post('/reservation', 'ReservationController@store')->name('reservation.store');
+
+Route::get('/paypal/{order?}', [
+    'name' => 'PayPal Express Checkout',
+    'as' => 'order.paypal',
+    'uses' => 'PayPalController@form',
+]);
+
+Route::post('/checkout/payment/{order}/paypal', [
+    'name' => 'PayPal Express Checkout',
+    'as' => 'checkout.payment.paypal',
+    'uses' => 'PayPalController@checkout',
+]);
+
+Route::get('/paypal/checkout/{order}/completed', [
+    'name' => 'PayPal Express Checkout',
+    'as' => 'paypal.checkout.completed',
+    'uses' => 'PayPalController@completed',
+]);
+
+Route::get('/paypal/checkout/{order}/cancelled', [
+    'name' => 'PayPal Express Checkout',
+    'as' => 'paypal.checkout.cancelled',
+    'uses' => 'PayPalController@cancelled',
+]);
+
+Route::post('/webhook/paypal/{order?}/{env?}', [
+    'name' => 'PayPal Express IPN',
+    'as' => 'webhook.paypal.ipn',
+    'uses' => 'PayPalController@webhook',
+]);

@@ -19,9 +19,13 @@
     <div class="content-header">
     </div>
     <!-- /.content-header -->
-
+    
     <!-- Main content -->
     <section class="content">
+      <form id="logout-form" action="{{ route('admin.logout') }}" method="POST">
+        @csrf
+        <button type="submit" class="btn btn-danger">Logout</button>
+      </form>
       @yield('content')
     </section>
     <!-- /.content -->

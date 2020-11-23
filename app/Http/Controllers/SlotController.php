@@ -33,7 +33,6 @@ class SlotController extends Controller
         $data['slots'] = Slot::where('field_id', $field_id)->get();
         $data['field'] = Field::with('country')->where('id', $field_id)->first();
         $data['reservations'] = Reservation::where('field_id', $field_id)->first();
-        // dd($data);
 
         return view('admin.slots.list', $data);
 
@@ -47,9 +46,13 @@ class SlotController extends Controller
     public function view($slot_id)
     {
         $data['totalSeat'] = Slot::where('id', $slot_id)->value('total_seat');
-        // $data['field'] = Field::with('country')->where('id', $field_id)->first();
-        $reservations = Reservation::where('field_id', $slot_id)->value('reserved_seat');
-        $data['reservedSeats'] = explode(',',$reservations);
+        $data['field'] = Slot::where('id', $slot_id)->value('field_id');
+        $reservations = Reservation::where('field_id', $slot_id)->get();
+        $data['reservedSeats'] = array();
+        foreach ($reservations as $reservation) {
+             array_push($data['reservedSeats'], $reservation->reserved_seat);
+        }
+        $data['seatPrice'] = Slot::where('id', $slot_id)->value('seat_price');
         
         return view('admin.slots.view', $data);
 

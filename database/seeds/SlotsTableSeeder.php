@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class SlotsTableSeeder extends Seeder
 {
@@ -22,6 +23,8 @@ class SlotsTableSeeder extends Seeder
                 'field_id' => 1,
                 'total_seat' => 30,
                 'seat_price' => 350,
+                'start_time' => Carbon::now()->subDays(7)->toDateTimeString(),
+                'end_time' => Carbon::now()->subDays(7)->toDateTimeString(),
                 'created_at'  => Null,
                 'updated_at'  => Null,
             ),
@@ -32,6 +35,8 @@ class SlotsTableSeeder extends Seeder
                 'field_id' => 2,
                 'total_seat' => 35,
                 'seat_price' => 300,
+                'start_time' => Carbon::now()->subDays(7)->toDateTimeString(),
+                'end_time' => Carbon::now()->subDays(7)->toDateTimeString(),
                 'created_at'  => Null,
                 'updated_at'  => Null,
             ),
@@ -42,6 +47,8 @@ class SlotsTableSeeder extends Seeder
                 'field_id' => 3,
                 'total_seat' => 40,
                 'seat_price' => 250,
+                'start_time' => Carbon::now()->subDays(7)->toDateTimeString(),
+                'end_time' => Carbon::now()->subDays(7)->toDateTimeString(),
                 'created_at'  => Null,
                 'updated_at'  => Null,
             ),

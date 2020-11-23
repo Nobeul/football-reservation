@@ -35,7 +35,7 @@
                     <td>{{ $slot->total_seat }}</td>
                     <td>{{ $slot->seat_price }}</td>
                     <td>
-                        <a type="button" class="btn edit-button" href="{{ route('slot.list', $slot->id) }}"><i class="fas fa-eye"></i></a>
+                        <a type="button" class="btn edit-button" href="{{ route('slot.details', $field->id, $slot->id) }}"><i class="fas fa-eye"></i></a>
                     </td>
                 </tr>
                 @endforeach

@@ -20,24 +20,27 @@ class ReservationsTableSeeder extends Seeder
                 'id' => 1,
                 'user_id' => 1,
                 'field_id' => 1,
-                'created_at'  => Null,
-                'updated_at'  => Null,
+                'reserved_seat' => '1,2,3',
+                'created_at'  => null,
+                'updated_at'  => null,
             ),
             1 => 
             array (
                 'id' => 2,
                 'user_id' => 1,
                 'field_id' => 2,
-                'created_at'  => Null,
-                'updated_at'  => Null,
+                'reserved_seat' => '16,20',
+                'created_at'  => null,
+                'updated_at'  => null,
             ),
             2 => 
             array (
                 'id' => 3,
                 'user_id' => 2,
                 'field_id' => 3,
-                'created_at'  => Null,
-                'updated_at'  => Null,
+                'reserved_seat' => '11,12,13',
+                'created_at'  => null,
+                'updated_at'  => null,
             ),
             
         ));
