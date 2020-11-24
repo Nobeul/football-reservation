@@ -18,11 +18,8 @@ class PayPalController extends Controller
      */
     public function form($order_id, Request $request)
     {
-        $orderId = Reservation::where('id',$order_id)->value('order_id');
-        $data['order'] = Reservation::where('order_id', $orderId)->get();
-        $data['orderId'] = $orderId;
-
-        // the above order is just for example.
+        $reservation = Reservation::where('order_id',$order_id)->value('order_id');
+        $data['order'] = Order::where('id', $reservation)->first();
 
         return view('admin.slots.paypal', $data);
     }
@@ -33,16 +30,16 @@ class PayPalController extends Controller
      */
     public function checkout($order_id, Request $request)
     {
-        $orderId = Reservation::where('order_id', $order_id)->value('order_id');
+        $order = Order::where('id', $order_id)->first();
 
         $paypal = new PayPal;
 
         $response = $paypal->purchase([
             'amount' => $paypal->formatAmount($request->amount),
-            'transactionId' => $orderId,
+            'transactionId' => $order->id,
             'currency' => 'USD',
-            'cancelUrl' => $paypal->getCancelUrl($orderId),
-            'returnUrl' => $paypal->getReturnUrl($orderId),
+            'cancelUrl' => $paypal->getCancelUrl($order->id),
+            'returnUrl' => $paypal->getReturnUrl($order->id),
         ]);
 
         if ($response->isRedirect()) {
@@ -61,7 +58,7 @@ class PayPalController extends Controller
      */
     public function completed($order_id, Request $request)
     {
-        $order = Reservation::where('order_id',$order_id)->first();
+        $order = Order::where('id',$order_id)->first();
 
         $paypal = new PayPal;
 
@@ -69,15 +66,15 @@ class PayPalController extends Controller
             'amount' => $paypal->formatAmount($order->amount),
             'transactionId' => $order->id,
             'currency' => 'USD',
-            'cancelUrl' => $paypal->getCancelUrl($order),
-            'returnUrl' => $paypal->getReturnUrl($order),
-            'notifyUrl' => $paypal->getNotifyUrl($order),
+            'cancelUrl' => $paypal->getCancelUrl($order->id),
+            'returnUrl' => $paypal->getReturnUrl($order->id),
+            'notifyUrl' => $paypal->getNotifyUrl($order->id),
         ]);
 
         if ($response->isSuccessful()) {
             $order->update([
                 'transaction_id' => $response->getTransactionReference(),
-                'payment_status' => Reservation::PAYMENT_COMPLETED,
+                'payment_status' => Order::PAYMENT_COMPLETED,
             ]);
 
             return redirect()->route('order.paypal', $order->id)->with([
@@ -95,9 +92,11 @@ class PayPalController extends Controller
      */
     public function cancelled($order_id)
     {
-        $order = Reservation::where('order_id',$order_id)->first();
+        $order = Order::where('id',$order_id)->first();
+        Order::where('id', $order->id)->delete();
+        Reservation::where('order_id',$order->id)->delete();
 
-        return redirect()->route('order.paypal', $order->id)->with([
+        return redirect()->route('field.list')->with([
             'message' => 'You have cancelled your recent PayPal payment !',
         ]);
     }

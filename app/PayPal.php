@@ -64,8 +64,6 @@ class PayPal
      */
     public function getCancelUrl($order)
     {
-        // $order = Reservation::where('order_id', $order)->first();
-
         return route('paypal.checkout.cancelled', $order);
     }
 
@@ -74,8 +72,6 @@ class PayPal
      */
     public function getReturnUrl($order)
     {
-        // $order = Reservation::where('order_id', $order)->first();
-
         return route('paypal.checkout.completed', $order);
     }
 

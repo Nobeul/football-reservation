@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Reservation;
+use App\Order;
 
 class ReservationController extends Controller
 {
@@ -41,8 +42,12 @@ class ReservationController extends Controller
     public function store(Request $request)
     {
         $orderId = Reservation::orderBy('id','desc')->first();
-        $orderId = !empty($orderId) ? $orderId->order_id : 0;
-        $orderId = ++$orderId;
+
+        $order = new Order;
+        $order->transaction_id = null;
+        $order->amount = $request->amount;
+        $order->payment_status = 0;
+        $order->save();
 
         $reservedSeat = explode(",",$request->reserved_seat);
         foreach ($reservedSeat as $seat) {
@@ -50,11 +55,11 @@ class ReservationController extends Controller
             $reservation->user_id = Auth::id();
             $reservation->field_id = $request->field_id;
             $reservation->reserved_seat = $seat;
-            $reservation->order_id = $orderId;
-            $reservation->amount = $request->amount/count($reservedSeat);
+            $reservation->order_id = $order->id;
+
             $reservation->save();
         }
-        return redirect()->route('order.paypal',$reservation->id);
+        return redirect()->route('order.paypal',$order->id);
         // return redirect()->back();
     }
 

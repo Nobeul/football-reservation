@@ -17,19 +17,12 @@
           <p><strong>Order Overview !</strong></p>
           <hr>
           <p>Item : Ticket payment with PayPal !</p>
-          <p id="total-amount">Amount : $
-              @php
-              $amount = 0;
-              foreach ($order as $odr) {
-                  $amount += $odr->amount;
-              }
-              echo $amount;
-              @endphp
+          <p id="total-amount">Amount : ${{ $order->amount }}
             </p>
             <hr>
         </div>
         <div class="gateway--paypal">
-            <form method="POST" action="{{ route('checkout.payment.paypal', $orderId) }}">
+            <form method="POST" action="{{ route('checkout.payment.paypal', $order->id) }}">
                 {{ csrf_field() }}
                 <input type="hidden" name="amount" id="amount">
                 <button class="btn btn-primary">

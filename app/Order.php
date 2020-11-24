@@ -12,7 +12,7 @@ class Order extends Model
     /**
      * @var string
      */
-    protected $table = 'reservations';
+    protected $table = 'orders';
 
     /**
      * @var array
